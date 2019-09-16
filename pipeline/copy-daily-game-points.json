@@ -13,7 +13,16 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [],
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "adf-data/DataFactory-EdX Course/gamedata/2016/01/01.csv"
+					},
+					{
+						"name": "Destination",
+						"value": ".dbo.points"
+					}
+				],
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
@@ -26,9 +35,45 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink"
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Player",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Player",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Time",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Time",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Points",
+									"type": "String"
+								},
+								"sink": {
+									"name": "Points",
+									"type": "String"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
