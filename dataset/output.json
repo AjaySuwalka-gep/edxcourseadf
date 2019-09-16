@@ -1,0 +1,20 @@
+{
+	"name": "output",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "edxAzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "dbo.points"
+		},
+		"availability": {
+			"frequency": "Day",
+			"interval": 1
+		}
+	}
+}
