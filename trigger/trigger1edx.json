@@ -1,0 +1,25 @@
+{
+	"name": "trigger1edx",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "copy-daily-game-points",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 3,
+				"startTime": "2019-09-17T14:17:00.000Z",
+				"endTime": "2019-09-17T14:30:00.000Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
