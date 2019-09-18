@@ -98,24 +98,40 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/azuresql_dimProduct')]",
+			"name": "[concat(parameters('factoryName'), '/dimproductcsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "edxAzureSqlDatabase",
+					"referenceName": "daily_game_data_csv",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
+				"type": "DelimitedText",
 				"typeProperties": {
-					"schema": "azdbo",
-					"table": "points"
-				}
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "adf-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/edxAzureSqlDatabase')]"
+				"[concat(variables('factoryId'), '/linkedServices/daily_game_data_csv')]"
 			]
 		},
 		{
@@ -324,7 +340,7 @@
 							},
 							{
 								"name": "Destination",
-								"value": "azdbo.DimProduct"
+								"value": "."
 							}
 						],
 						"typeProperties": {
@@ -332,374 +348,23 @@
 								"type": "SqlServerSource"
 							},
 							"sink": {
-								"type": "AzureSqlSink",
-								"tableOption": "autoCreate"
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
 							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "ProductKey",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "ProductKey",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductAlternateKey",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ProductAlternateKey",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductSubcategoryKey",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "ProductSubcategoryKey",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "WeightUnitMeasureCode",
-											"type": "String"
-										},
-										"sink": {
-											"name": "WeightUnitMeasureCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SizeUnitMeasureCode",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SizeUnitMeasureCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "EnglishProductName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "EnglishProductName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SpanishProductName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SpanishProductName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FrenchProductName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "FrenchProductName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "StandardCost",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "StandardCost",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "FinishedGoodsFlag",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "FinishedGoodsFlag",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "Color",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Color",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SafetyStockLevel",
-											"type": "Int16"
-										},
-										"sink": {
-											"name": "SafetyStockLevel",
-											"type": "Int16"
-										}
-									},
-									{
-										"source": {
-											"name": "ReorderPoint",
-											"type": "Int16"
-										},
-										"sink": {
-											"name": "ReorderPoint",
-											"type": "Int16"
-										}
-									},
-									{
-										"source": {
-											"name": "ListPrice",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "ListPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "Size",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Size",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SizeRange",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SizeRange",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Weight",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "Weight",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "DaysToManufacture",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "DaysToManufacture",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductLine",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ProductLine",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DealerPrice",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "DealerPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "Class",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Class",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Style",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Style",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ModelName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ModelName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LargePhoto",
-											"type": "Byte[]"
-										},
-										"sink": {
-											"name": "LargePhoto",
-											"type": "Byte[]"
-										}
-									},
-									{
-										"source": {
-											"name": "EnglishDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "EnglishDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FrenchDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "FrenchDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ChineseDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ChineseDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ArabicDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ArabicDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "HebrewDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "HebrewDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ThaiDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ThaiDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "GermanDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "GermanDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "JapaneseDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "JapaneseDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TurkishDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TurkishDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "StartDate",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "StartDate",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "EndDate",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "EndDate",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "Status",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Status",
-											"type": "String"
-										}
-									}
-								]
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "daily_game_data_csv",
+									"type": "LinkedServiceReference"
+								},
+								"path": "adf-data"
 							}
 						},
 						"inputs": [
@@ -711,7 +376,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "azuresql_dimProduct",
+								"referenceName": "dimproductcsv",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -722,7 +387,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/onprem_dimension_table')]",
-				"[concat(variables('factoryId'), '/datasets/azuresql_dimProduct')]"
+				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]",
+				"[concat(variables('factoryId'), '/linkedServices/daily_game_data_csv')]"
 			]
 		},
 		{
