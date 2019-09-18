@@ -28,16 +28,7 @@
 						"type": "SqlServerSource"
 					},
 					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "PreserveHierarchy"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".csv"
-						}
+						"type": "AzureSqlSink"
 					},
 					"enableStaging": true,
 					"stagingSettings": {
@@ -421,7 +412,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "dimproductcsv",
+						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
 					}
 				]
