@@ -1,0 +1,70 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "EDx-Course-ADF"
+		},
+		"blobstore_json_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'blobstore_json'"
+		},
+		"daily_game_data_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'daily_game_data_csv'"
+		},
+		"edxAzureSqlDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'edxAzureSqlDatabase'"
+		},
+		"onprem_sql_adventureworks2016_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'onprem_sql_adventureworks2016'"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas Token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"blobstore_json_connectionString": {
+						"value": "[parameters('blobstore_json_connectionString')]"
+					},
+					"daily_game_data_csv_connectionString": {
+						"value": "[parameters('daily_game_data_csv_connectionString')]"
+					},
+					"edxAzureSqlDatabase_connectionString": {
+						"value": "[parameters('edxAzureSqlDatabase_connectionString')]"
+					},
+					"onprem_sql_adventureworks2016_connectionString": {
+						"value": "[parameters('onprem_sql_adventureworks2016_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

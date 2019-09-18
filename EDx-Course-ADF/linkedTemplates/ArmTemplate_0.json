@@ -1,0 +1,759 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "EDx-Course-ADF"
+		},
+		"blobstore_json_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'blobstore_json'"
+		},
+		"daily_game_data_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'daily_game_data_csv'"
+		},
+		"edxAzureSqlDatabase_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'edxAzureSqlDatabase'"
+		},
+		"onprem_sql_adventureworks2016_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'onprem_sql_adventureworks2016'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/blobstore_json')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('blobstore_json_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/daily_game_data_csv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('daily_game_data_csv_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/edxAzureSqlDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('edxAzureSqlDatabase_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SelfHostedIntegrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/onprem_sql_adventureworks2016')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "connecting with on-premise data in SQL data warehouse using self-hosted integration runtime",
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('onprem_sql_adventureworks2016_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntime1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azuresql_dimProduct')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "edxAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "azdbo",
+					"table": "points"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/edxAzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/onprem_dimension_table')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "onprem_sql_adventureworks2016",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "ProductKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductAlternateKey",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductSubcategoryKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "WeightUnitMeasureCode",
+						"type": "nchar"
+					},
+					{
+						"name": "SizeUnitMeasureCode",
+						"type": "nchar"
+					},
+					{
+						"name": "EnglishProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SpanishProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FrenchProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "StandardCost",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "FinishedGoodsFlag",
+						"type": "bit"
+					},
+					{
+						"name": "Color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SafetyStockLevel",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ReorderPoint",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ListPrice",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Size",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SizeRange",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Weight",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "DaysToManufacture",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ProductLine",
+						"type": "nchar"
+					},
+					{
+						"name": "DealerPrice",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Class",
+						"type": "nchar"
+					},
+					{
+						"name": "Style",
+						"type": "nchar"
+					},
+					{
+						"name": "ModelName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LargePhoto",
+						"type": "varbinary"
+					},
+					{
+						"name": "EnglishDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "FrenchDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ChineseDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ArabicDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "HebrewDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ThaiDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "GermanDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "JapaneseDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "TurkishDescription",
+						"type": "nvarchar"
+					},
+					{
+						"name": "StartDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "EndDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Status",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DimProduct"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/onprem_sql_adventureworks2016')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adf_loadDimension_onpremise')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load Dimension",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [
+							{
+								"name": "Source",
+								"value": "dbo.DimProduct"
+							},
+							{
+								"name": "Destination",
+								"value": "azdbo.DimProduct"
+							}
+						],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"tableOption": "autoCreate"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ProductKey",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ProductKey",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "ProductAlternateKey",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ProductAlternateKey",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ProductSubcategoryKey",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "ProductSubcategoryKey",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "WeightUnitMeasureCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "WeightUnitMeasureCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SizeUnitMeasureCode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SizeUnitMeasureCode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "EnglishProductName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "EnglishProductName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SpanishProductName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SpanishProductName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FrenchProductName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FrenchProductName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "StandardCost",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "StandardCost",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "FinishedGoodsFlag",
+											"type": "Boolean"
+										},
+										"sink": {
+											"name": "FinishedGoodsFlag",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "Color",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Color",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SafetyStockLevel",
+											"type": "Int16"
+										},
+										"sink": {
+											"name": "SafetyStockLevel",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "ReorderPoint",
+											"type": "Int16"
+										},
+										"sink": {
+											"name": "ReorderPoint",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "ListPrice",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "ListPrice",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "Size",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Size",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "SizeRange",
+											"type": "String"
+										},
+										"sink": {
+											"name": "SizeRange",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Weight",
+											"type": "Double"
+										},
+										"sink": {
+											"name": "Weight",
+											"type": "Double"
+										}
+									},
+									{
+										"source": {
+											"name": "DaysToManufacture",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "DaysToManufacture",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "ProductLine",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ProductLine",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "DealerPrice",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "DealerPrice",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "Class",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Class",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Style",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Style",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ModelName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ModelName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LargePhoto",
+											"type": "Byte[]"
+										},
+										"sink": {
+											"name": "LargePhoto",
+											"type": "Byte[]"
+										}
+									},
+									{
+										"source": {
+											"name": "EnglishDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "EnglishDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "FrenchDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "FrenchDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ChineseDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ChineseDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ArabicDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ArabicDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "HebrewDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "HebrewDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ThaiDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "ThaiDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "GermanDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "GermanDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "JapaneseDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "JapaneseDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TurkishDescription",
+											"type": "String"
+										},
+										"sink": {
+											"name": "TurkishDescription",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "StartDate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "StartDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "EndDate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "EndDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "Status",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Status",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "onprem_dimension_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "azuresql_dimProduct",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/onprem_dimension_table')]",
+				"[concat(variables('factoryId'), '/datasets/azuresql_dimProduct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1edx')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "adf_loadDimension_onpremise",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 2,
+						"startTime": "2019-09-17T14:30:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/adf_loadDimension_onpremise')]"
+			]
+		}
+	]
+}

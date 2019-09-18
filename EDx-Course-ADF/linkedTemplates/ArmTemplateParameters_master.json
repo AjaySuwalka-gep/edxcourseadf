@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "EDx-Course-ADF"
+		},
+		"blobstore_json_connectionString": {
+			"value": ""
+		},
+		"daily_game_data_csv_connectionString": {
+			"value": ""
+		},
+		"edxAzureSqlDatabase_connectionString": {
+			"value": ""
+		},
+		"onprem_sql_adventureworks2016_connectionString": {
+			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
