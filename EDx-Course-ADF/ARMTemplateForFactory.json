@@ -52,7 +52,7 @@
 							},
 							{
 								"name": "Destination",
-								"value": "."
+								"value": "adf-data//"
 							}
 						],
 						"typeProperties": {
