@@ -120,12 +120,15 @@
 				},
 				"schema": [
 					{
+						"name": "Player",
 						"type": "String"
 					},
 					{
+						"name": "Time",
 						"type": "String"
 					},
 					{
+						"name": "Points",
 						"type": "String"
 					}
 				]
@@ -355,7 +358,7 @@
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
 									"quoteAllText": true,
-									"fileExtension": ".txt"
+									"fileExtension": ".csv"
 								}
 							},
 							"enableStaging": true,
@@ -365,6 +368,41 @@
 									"type": "LinkedServiceReference"
 								},
 								"path": "adf-data"
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ProductKey",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "Player",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ProductAlternateKey",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Time",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "ProductSubcategoryKey",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "Points",
+											"type": "String"
+										}
+									}
+								]
 							}
 						},
 						"inputs": [
