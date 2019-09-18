@@ -1,0 +1,12 @@
+{
+	"name": "azuresql_dimProduct",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "edxAzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

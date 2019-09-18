@@ -1,9 +1,9 @@
 {
-	"name": "copy-daily-game-points",
+	"name": "adf_loadDimension_onpremise",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data1",
+				"name": "Load Dimension",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -25,18 +25,7 @@
 				],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"tableOption": "autoCreate"
+						"type": "SqlServerSource"
 					},
 					"enableStaging": false,
 					"translator": {
@@ -77,13 +66,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "input",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "output",
+						"referenceName": "onprem_dimension_table",
 						"type": "DatasetReference"
 					}
 				]

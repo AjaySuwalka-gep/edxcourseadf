@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "copy-daily-game-points",
+					"referenceName": "adf_loadDimension_onpremise",
 					"type": "PipelineReference"
 				}
 			}
