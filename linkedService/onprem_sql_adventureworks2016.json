@@ -1,0 +1,17 @@
+{
+	"name": "onprem_sql_adventureworks2016",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "connecting with on-premise data in SQL data warehouse using self-hosted integration runtime",
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=MUM02L5692\\SQLEXPRESS;initial catalog=AdventureWorksDW2016;user id=sa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ZDEyOTBmOS1iOGE4LTRkZmItYjI0Ni1kMzE1Y2QyZWZmOGYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfHostedIntegrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
