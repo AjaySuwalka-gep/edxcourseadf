@@ -78,26 +78,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/onprem_sql_adventureworks2016')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "connecting with on-premise data in SQL data warehouse using self-hosted integration runtime",
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"connectionString": "[parameters('onprem_sql_adventureworks2016_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "SelfHostedIntegrationRuntime1",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntime1')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/dimproductcsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -135,6 +115,26 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/daily_game_data_csv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/onprem_sql_adventureworks2016')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "connecting with on-premise data in SQL data warehouse using self-hosted integration runtime",
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('onprem_sql_adventureworks2016_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntime1",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntime1')]"
 			]
 		},
 		{
@@ -353,7 +353,8 @@
 							"sink": {
 								"type": "DelimitedTextSink",
 								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
