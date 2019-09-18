@@ -37,7 +37,7 @@
 						},
 						"tableOption": "autoCreate"
 					},
-					"enableStaging": false,
+					"enableStaging": true,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
