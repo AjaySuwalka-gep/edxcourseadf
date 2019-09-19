@@ -164,169 +164,70 @@
 				"type": "SqlServerTable",
 				"schema": [
 					{
-						"name": "ProductKey",
+						"name": "EnglishProductCategoryName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Model",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerKey",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "ProductAlternateKey",
+						"name": "Region",
 						"type": "nvarchar"
 					},
 					{
-						"name": "ProductSubcategoryKey",
+						"name": "Age",
 						"type": "int",
 						"precision": 10
 					},
 					{
-						"name": "WeightUnitMeasureCode",
-						"type": "nchar"
+						"name": "IncomeGroup",
+						"type": "varchar"
 					},
 					{
-						"name": "SizeUnitMeasureCode",
-						"type": "nchar"
-					},
-					{
-						"name": "EnglishProductName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SpanishProductName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FrenchProductName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "StandardCost",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "FinishedGoodsFlag",
-						"type": "bit"
-					},
-					{
-						"name": "Color",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SafetyStockLevel",
+						"name": "CalendarYear",
 						"type": "smallint",
 						"precision": 5
 					},
 					{
-						"name": "ReorderPoint",
+						"name": "FiscalYear",
 						"type": "smallint",
 						"precision": 5
 					},
 					{
-						"name": "ListPrice",
+						"name": "Month",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "OrderNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "LineNumber",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "Quantity",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "Amount",
 						"type": "money",
 						"precision": 19,
 						"scale": 4
-					},
-					{
-						"name": "Size",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SizeRange",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Weight",
-						"type": "float",
-						"precision": 15
-					},
-					{
-						"name": "DaysToManufacture",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "ProductLine",
-						"type": "nchar"
-					},
-					{
-						"name": "DealerPrice",
-						"type": "money",
-						"precision": 19,
-						"scale": 4
-					},
-					{
-						"name": "Class",
-						"type": "nchar"
-					},
-					{
-						"name": "Style",
-						"type": "nchar"
-					},
-					{
-						"name": "ModelName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LargePhoto",
-						"type": "varbinary"
-					},
-					{
-						"name": "EnglishDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FrenchDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ChineseDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ArabicDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "HebrewDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ThaiDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "GermanDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "JapaneseDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "TurkishDescription",
-						"type": "nvarchar"
-					},
-					{
-						"name": "StartDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "EndDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Status",
-						"type": "nvarchar"
 					}
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "DimProduct"
+					"table": "vDMPrep"
 				}
 			},
 			"dependsOn": [
@@ -383,362 +284,132 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "ProductKey",
+											"name": "EnglishProductCategoryName",
+											"type": "String"
+										},
+										"sink": {
+											"name": "EnglishProductCategoryName",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Model",
+											"type": "String"
+										},
+										"sink": {
+											"name": "Model",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "CustomerKey",
 											"type": "Int32"
 										},
 										"sink": {
-											"name": "ProductKey",
+											"name": "CustomerKey",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "ProductAlternateKey",
+											"name": "Region",
 											"type": "String"
 										},
 										"sink": {
-											"name": "ProductAlternateKey",
+											"name": "Region",
 											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "ProductSubcategoryKey",
+											"name": "Age",
 											"type": "Int32"
 										},
 										"sink": {
-											"name": "ProductSubcategoryKey",
+											"name": "Age",
 											"type": "Int32"
 										}
 									},
 									{
 										"source": {
-											"name": "WeightUnitMeasureCode",
+											"name": "IncomeGroup",
 											"type": "String"
 										},
 										"sink": {
-											"name": "WeightUnitMeasureCode",
+											"name": "IncomeGroup",
 											"type": "String"
 										}
 									},
 									{
 										"source": {
-											"name": "SizeUnitMeasureCode",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SizeUnitMeasureCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "EnglishProductName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "EnglishProductName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SpanishProductName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SpanishProductName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FrenchProductName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "FrenchProductName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "StandardCost",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "StandardCost",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "FinishedGoodsFlag",
-											"type": "Boolean"
-										},
-										"sink": {
-											"name": "FinishedGoodsFlag",
-											"type": "Boolean"
-										}
-									},
-									{
-										"source": {
-											"name": "Color",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Color",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SafetyStockLevel",
+											"name": "CalendarYear",
 											"type": "Int16"
 										},
 										"sink": {
-											"name": "SafetyStockLevel",
+											"name": "CalendarYear",
 											"type": "Int16"
 										}
 									},
 									{
 										"source": {
-											"name": "ReorderPoint",
+											"name": "FiscalYear",
 											"type": "Int16"
 										},
 										"sink": {
-											"name": "ReorderPoint",
+											"name": "FiscalYear",
 											"type": "Int16"
 										}
 									},
 									{
 										"source": {
-											"name": "ListPrice",
+											"name": "Month",
+											"type": "Byte"
+										},
+										"sink": {
+											"name": "Month",
+											"type": "Byte"
+										}
+									},
+									{
+										"source": {
+											"name": "OrderNumber",
+											"type": "String"
+										},
+										"sink": {
+											"name": "OrderNumber",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LineNumber",
+											"type": "Byte"
+										},
+										"sink": {
+											"name": "LineNumber",
+											"type": "Byte"
+										}
+									},
+									{
+										"source": {
+											"name": "Quantity",
+											"type": "Int16"
+										},
+										"sink": {
+											"name": "Quantity",
+											"type": "Int16"
+										}
+									},
+									{
+										"source": {
+											"name": "Amount",
 											"type": "Decimal"
 										},
 										"sink": {
-											"name": "ListPrice",
+											"name": "Amount",
 											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "Size",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Size",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "SizeRange",
-											"type": "String"
-										},
-										"sink": {
-											"name": "SizeRange",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Weight",
-											"type": "Double"
-										},
-										"sink": {
-											"name": "Weight",
-											"type": "Double"
-										}
-									},
-									{
-										"source": {
-											"name": "DaysToManufacture",
-											"type": "Int32"
-										},
-										"sink": {
-											"name": "DaysToManufacture",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"name": "ProductLine",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ProductLine",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "DealerPrice",
-											"type": "Decimal"
-										},
-										"sink": {
-											"name": "DealerPrice",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"name": "Class",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Class",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "Style",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Style",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ModelName",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ModelName",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "LargePhoto",
-											"type": "Byte[]"
-										},
-										"sink": {
-											"name": "LargePhoto",
-											"type": "Byte[]"
-										}
-									},
-									{
-										"source": {
-											"name": "EnglishDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "EnglishDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "FrenchDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "FrenchDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ChineseDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ChineseDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ArabicDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ArabicDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "HebrewDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "HebrewDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "ThaiDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "ThaiDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "GermanDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "GermanDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "JapaneseDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "JapaneseDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "TurkishDescription",
-											"type": "String"
-										},
-										"sink": {
-											"name": "TurkishDescription",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"name": "StartDate",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "StartDate",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "EndDate",
-											"type": "DateTime"
-										},
-										"sink": {
-											"name": "EndDate",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"name": "Status",
-											"type": "String"
-										},
-										"sink": {
-											"name": "Status",
-											"type": "String"
 										}
 									}
 								]
@@ -764,8 +435,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/onprem_dimension_table')]",
-				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]",
-				"[concat(variables('factoryId'), '/linkedServices/daily_game_data_csv')]"
+				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]"
 			]
 		},
 		{
