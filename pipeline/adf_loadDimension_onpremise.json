@@ -16,7 +16,7 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "dbo.DimProduct"
+						"value": "dbo.vDMPrep"
 					},
 					{
 						"name": "Destination",
