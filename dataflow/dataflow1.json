@@ -13,8 +13,15 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
-			"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1"
+			"transformations": [
+				{
+					"name": "AddedAmountAfterAddingTax"
+				},
+				{
+					"name": "ConditionalSplit1"
+				}
+			],
+			"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1\nsource1 derive(AmountwithTax = round(toFloat(Amount)*1.25)) ~> AddedAmountAfterAddingTax\nAddedAmountAfterAddingTax split(greater(toFloat(AmountwithTax), 4000),\n\tdisjoint: true) ~> ConditionalSplit1@(TaxedAmountGreaterThan4000, TaxedAmountLesserOrEqual4000)"
 		}
 	}
 }
