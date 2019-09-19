@@ -1,0 +1,20 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dataflowstorage1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1"
+		}
+	}
+}
