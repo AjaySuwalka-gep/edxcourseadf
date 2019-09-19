@@ -9,169 +9,70 @@
 		"type": "SqlServerTable",
 		"schema": [
 			{
-				"name": "ProductKey",
+				"name": "EnglishProductCategoryName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Model",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CustomerKey",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "ProductAlternateKey",
+				"name": "Region",
 				"type": "nvarchar"
 			},
 			{
-				"name": "ProductSubcategoryKey",
+				"name": "Age",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "WeightUnitMeasureCode",
-				"type": "nchar"
+				"name": "IncomeGroup",
+				"type": "varchar"
 			},
 			{
-				"name": "SizeUnitMeasureCode",
-				"type": "nchar"
-			},
-			{
-				"name": "EnglishProductName",
-				"type": "nvarchar"
-			},
-			{
-				"name": "SpanishProductName",
-				"type": "nvarchar"
-			},
-			{
-				"name": "FrenchProductName",
-				"type": "nvarchar"
-			},
-			{
-				"name": "StandardCost",
-				"type": "money",
-				"precision": 19,
-				"scale": 4
-			},
-			{
-				"name": "FinishedGoodsFlag",
-				"type": "bit"
-			},
-			{
-				"name": "Color",
-				"type": "nvarchar"
-			},
-			{
-				"name": "SafetyStockLevel",
+				"name": "CalendarYear",
 				"type": "smallint",
 				"precision": 5
 			},
 			{
-				"name": "ReorderPoint",
+				"name": "FiscalYear",
 				"type": "smallint",
 				"precision": 5
 			},
 			{
-				"name": "ListPrice",
+				"name": "Month",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "OrderNumber",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LineNumber",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Quantity",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "Amount",
 				"type": "money",
 				"precision": 19,
 				"scale": 4
-			},
-			{
-				"name": "Size",
-				"type": "nvarchar"
-			},
-			{
-				"name": "SizeRange",
-				"type": "nvarchar"
-			},
-			{
-				"name": "Weight",
-				"type": "float",
-				"precision": 15
-			},
-			{
-				"name": "DaysToManufacture",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "ProductLine",
-				"type": "nchar"
-			},
-			{
-				"name": "DealerPrice",
-				"type": "money",
-				"precision": 19,
-				"scale": 4
-			},
-			{
-				"name": "Class",
-				"type": "nchar"
-			},
-			{
-				"name": "Style",
-				"type": "nchar"
-			},
-			{
-				"name": "ModelName",
-				"type": "nvarchar"
-			},
-			{
-				"name": "LargePhoto",
-				"type": "varbinary"
-			},
-			{
-				"name": "EnglishDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "FrenchDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "ChineseDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "ArabicDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "HebrewDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "ThaiDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "GermanDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "JapaneseDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "TurkishDescription",
-				"type": "nvarchar"
-			},
-			{
-				"name": "StartDate",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 3
-			},
-			{
-				"name": "EndDate",
-				"type": "datetime",
-				"precision": 23,
-				"scale": 3
-			},
-			{
-				"name": "Status",
-				"type": "nvarchar"
 			}
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "DimProduct"
+			"table": "vDMPrep"
 		}
 	}
 }
