@@ -5,12 +5,16 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "dataflowstorage1",
+						"type": "DatasetReference"
+					},
 					"name": "source1"
 				}
 			],
 			"sinks": [],
 			"transformations": [],
-			"script": "\n\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
+			"script": "\n\nsource(output(\n\t\tPlayer as string,\n\t\tTime as string,\n\t\tPoints as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1"
 		}
 	}
 }
