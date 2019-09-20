@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "data",
 				"folderPath": "DataFactory-EdX Course",
 				"container": "adf-data"
 			},
