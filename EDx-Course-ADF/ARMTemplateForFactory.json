@@ -26,6 +26,10 @@
 		"onprem_sql_adventureworks2016_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'onprem_sql_adventureworks2016'"
+		},
+		"trigger1_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ea9a5a5a-ade1-4d65-b335-596cef268896/resourceGroups/freetrialresourcegroup/providers/Microsoft.Storage/storageAccounts/blobstoreedx"
 		}
 	},
 	"variables": {
@@ -573,36 +577,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1edx')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "adf_loadDimension_onpremise",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 2,
-						"startTime": "2019-09-17T14:30:00.000Z",
-						"timeZone": "UTC"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/adf_loadDimension_onpremise')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/SelfHostedIntegrationRuntime1')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -664,6 +638,65 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]",
 				"[concat(variables('factoryId'), '/datasets/dataflowstorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "adf_loadDimension_onpremise",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/adf-data/blobs/",
+					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/adf_loadDimension_onpremise')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger2')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "adf_loadDimension_onpremise",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 3,
+						"startTime": "2019-09-20T12:35:00.000Z",
+						"timeZone": "UTC"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/adf_loadDimension_onpremise')]"
 			]
 		}
 	]
