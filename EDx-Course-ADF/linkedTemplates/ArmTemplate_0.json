@@ -223,7 +223,20 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": []
+				"schema": [
+					{
+						"name": "Player",
+						"type": "String"
+					},
+					{
+						"name": "Time",
+						"type": "String"
+					},
+					{
+						"name": "Points",
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/daily_game_data_csv')]"
@@ -378,7 +391,7 @@
 							"name": "Aggregate1"
 						}
 					],
-					"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1\nsource1 derive(AmountwithTax = round(toFloat(Amount)*1.25)) ~> AddedAmountAfterAddingTax\nAddedAmountAfterAddingTax split(greater(toFloat(AmountwithTax), 4000),\n\tdisjoint: false) ~> ConditionalSplit1@(TaxedAmountGreaterThan4000, TaxedAmountLesserOrEqual4000)\nConditionalSplit1@TaxedAmountGreaterThan4000, ConditionalSplit1@TaxedAmountLesserOrEqual4000 exists(ConditionalSplit1@TaxedAmountGreaterThan4000@IncomeGroup == ConditionalSplit1@TaxedAmountLesserOrEqual4000@IncomeGroup,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nExists1, source1 union(byName: true)~> Union1\nUnion1 select(mapColumn(\n\t\tEnglishProductCategoryName,\n\t\tModel,\n\t\tCustomerKey,\n\t\tRegion,\n\t\tAge,\n\t\tIncomeGroup,\n\t\tCalendarYear,\n\t\tFiscalYear,\n\t\tMonth,\n\t\tOrderNumber,\n\t\tLineNumber,\n\t\tQuantity,\n\t\tAmount,\n\t\tAmountwithTax\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 aggregate(groupBy(Age),\n\tAverageByAge = sum(toFloat(Amount))/count(Amount)) ~> Aggregate1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+					"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1\nsource1 derive(AmountwithTax = round(toFloat(Amount)*1.25)) ~> AddedAmountAfterAddingTax\nAddedAmountAfterAddingTax split(greater(toFloat(AmountwithTax), 4000),\n\tdisjoint: false) ~> ConditionalSplit1@(TaxedAmountGreaterThan4000, TaxedAmountLesserOrEqual4000)\nConditionalSplit1@TaxedAmountGreaterThan4000, ConditionalSplit1@TaxedAmountLesserOrEqual4000 exists(ConditionalSplit1@TaxedAmountGreaterThan4000@IncomeGroup == ConditionalSplit1@TaxedAmountLesserOrEqual4000@IncomeGroup,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nExists1, source1 union(byName: true)~> Union1\nUnion1 select(mapColumn(\n\t\tEnglishProductCategoryName,\n\t\tModel,\n\t\tCustomerKey,\n\t\tRegion,\n\t\tAge,\n\t\tIncomeGroup,\n\t\tCalendarYear,\n\t\tFiscalYear,\n\t\tMonth,\n\t\tOrderNumber,\n\t\tLineNumber,\n\t\tQuantity,\n\t\tAmount,\n\t\tAmountwithTax\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 aggregate(groupBy(Age),\n\tAverageByAge = sum(toFloat(Amount))/count(Amount)) ~> Aggregate1\nAggregate1 sink(input(\n\t\tPlayer as string,\n\t\tTime as string,\n\t\tPoints as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 				}
 			},
 			"dependsOn": [
@@ -581,13 +594,46 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "Load Dimension",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {}
+						}
 					}
 				],
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/onprem_dimension_table')]",
-				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]"
+				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]",
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
 			]
 		},
 		{
