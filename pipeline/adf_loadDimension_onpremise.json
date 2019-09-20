@@ -236,7 +236,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/ajay.suwalka@gep.com"
+					"notebookPath": "/Users/ajay.suwalka@gep.com/firstpracticenotebook"
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricks1",
