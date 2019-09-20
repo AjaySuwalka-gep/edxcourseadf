@@ -264,6 +264,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/outputofdataflowwithpipeline')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "dataflowstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DataFactory-EdX Course",
+						"container": "adf-data"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/dataflowstorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/onprem_dimension_table')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -366,7 +394,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "dimproductcsv",
+								"referenceName": "outputofdataflowwithpipeline",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -392,11 +420,11 @@
 							"name": "Aggregate1"
 						}
 					],
-					"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1\nsource1 derive(AmountwithTax = round(toFloat(Amount)*1.25)) ~> AddedAmountAfterAddingTax\nAddedAmountAfterAddingTax split(greater(toFloat(AmountwithTax), 4000),\n\tdisjoint: false) ~> ConditionalSplit1@(TaxedAmountGreaterThan4000, TaxedAmountLesserOrEqual4000)\nConditionalSplit1@TaxedAmountGreaterThan4000, ConditionalSplit1@TaxedAmountLesserOrEqual4000 exists(ConditionalSplit1@TaxedAmountGreaterThan4000@IncomeGroup == ConditionalSplit1@TaxedAmountLesserOrEqual4000@IncomeGroup,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nExists1, source1 union(byName: true)~> Union1\nUnion1 select(mapColumn(\n\t\tEnglishProductCategoryName,\n\t\tModel,\n\t\tCustomerKey,\n\t\tRegion,\n\t\tAge,\n\t\tIncomeGroup,\n\t\tCalendarYear,\n\t\tFiscalYear,\n\t\tMonth,\n\t\tOrderNumber,\n\t\tLineNumber,\n\t\tQuantity,\n\t\tAmount,\n\t\tAmountwithTax\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 aggregate(groupBy(Age),\n\tAverageByAge = sum(toFloat(Amount))/count(Amount)) ~> Aggregate1\nAggregate1 sink(input(\n\t\tPlayer as string,\n\t\tTime as string,\n\t\tPoints as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
+					"script": "\n\nsource(output(\n\t\tEnglishProductCategoryName as string,\n\t\tModel as string,\n\t\tCustomerKey as string,\n\t\tRegion as string,\n\t\tAge as string,\n\t\tIncomeGroup as string,\n\t\tCalendarYear as string,\n\t\tFiscalYear as string,\n\t\tMonth as string,\n\t\tOrderNumber as string,\n\t\tLineNumber as string,\n\t\tQuantity as string,\n\t\tAmount as string\n\t),\n\tallowSchemaDrift: false,\n\tvalidateSchema: true) ~> source1\nsource1 derive(AmountwithTax = round(toFloat(Amount)*1.25)) ~> AddedAmountAfterAddingTax\nAddedAmountAfterAddingTax split(greater(toFloat(AmountwithTax), 4000),\n\tdisjoint: false) ~> ConditionalSplit1@(TaxedAmountGreaterThan4000, TaxedAmountLesserOrEqual4000)\nConditionalSplit1@TaxedAmountGreaterThan4000, ConditionalSplit1@TaxedAmountLesserOrEqual4000 exists(ConditionalSplit1@TaxedAmountGreaterThan4000@IncomeGroup == ConditionalSplit1@TaxedAmountLesserOrEqual4000@IncomeGroup,\n\tnegate:false,\n\tbroadcast: 'none')~> Exists1\nExists1, source1 union(byName: true)~> Union1\nUnion1 select(mapColumn(\n\t\tEnglishProductCategoryName,\n\t\tModel,\n\t\tCustomerKey,\n\t\tRegion,\n\t\tAge,\n\t\tIncomeGroup,\n\t\tCalendarYear,\n\t\tFiscalYear,\n\t\tMonth,\n\t\tOrderNumber,\n\t\tLineNumber,\n\t\tQuantity,\n\t\tAmount,\n\t\tAmountwithTax\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 aggregate(groupBy(Age),\n\tAverageByAge = sum(toFloat(Amount))/count(Amount)) ~> Aggregate1\nAggregate1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> sink1"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]",
+				"[concat(variables('factoryId'), '/datasets/outputofdataflowwithpipeline')]",
 				"[concat(variables('factoryId'), '/datasets/dataflowstorage1')]"
 			]
 		},
