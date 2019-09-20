@@ -20,9 +20,6 @@
 		"onprem_sql_adventureworks2016_connectionString": {
 			"value": ""
 		},
-		"trigger1_properties_typeProperties_scope": {
-			"value": "/subscriptions/ea9a5a5a-ade1-4d65-b335-596cef268896/resourceGroups/freetrialresourcegroup/providers/Microsoft.Storage/storageAccounts/blobstoreedx"
-		},
 		"containerUri": {
 			"value": ""
 		},

@@ -26,10 +26,6 @@
 		"onprem_sql_adventureworks2016_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'onprem_sql_adventureworks2016'"
-		},
-		"trigger1_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/ea9a5a5a-ade1-4d65-b335-596cef268896/resourceGroups/freetrialresourcegroup/providers/Microsoft.Storage/storageAccounts/blobstoreedx"
 		}
 	},
 	"variables": {
@@ -638,35 +634,6 @@
 				"[concat(variables('factoryId'), '/datasets/onprem_dimension_table')]",
 				"[concat(variables('factoryId'), '/datasets/dimproductcsv')]",
 				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "adf_loadDimension_onpremise",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "BlobEventsTrigger",
-				"typeProperties": {
-					"blobPathBeginsWith": "/adf-data/blobs/",
-					"scope": "[parameters('trigger1_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/adf_loadDimension_onpremise')]"
 			]
 		},
 		{
