@@ -11,6 +11,9 @@
 		"daily_game_data_csv_connectionString": {
 			"value": ""
 		},
+		"dataflowstorage_connectionString": {
+			"value": ""
+		},
 		"edxAzureSqlDatabase_connectionString": {
 			"value": ""
 		},
