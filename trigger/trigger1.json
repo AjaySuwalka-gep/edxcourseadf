@@ -1,0 +1,23 @@
+{
+	"name": "trigger1",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "adf_loadDimension_onpremise",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/adf-data/blobs/",
+			"scope": "/subscriptions/ea9a5a5a-ade1-4d65-b335-596cef268896/resourceGroups/freetrialresourcegroup/providers/Microsoft.Storage/storageAccounts/blobstoreedx",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
