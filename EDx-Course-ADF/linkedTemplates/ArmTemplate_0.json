@@ -216,6 +216,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"folderPath": "DataFactory-EdX Course",
 						"container": "adf-data"
 					},
 					"columnDelimiter": ",",
