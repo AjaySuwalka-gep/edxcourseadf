@@ -1,0 +1,23 @@
+{
+	"name": "outputofdataflowwithpipeline",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "dataflowstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "DataFactory-EdX Course",
+				"container": "adf-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
